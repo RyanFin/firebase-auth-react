@@ -17,6 +17,9 @@ export const signUp = async (email, password, name, address) => {
       createdAt: new Date(),
     });
 
+    // Store user information in localStorage
+    localStorage.setItem('user', JSON.stringify(user));
+
     return user;
   } catch (error) {
     console.error('Error signing up:', error);
@@ -28,7 +31,12 @@ export const signUp = async (email, password, name, address) => {
 export const login = async (email, password) => {
   try {
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    return userCredential.user;
+    const user = userCredential.user;
+
+    // Store user information in localStorage
+    localStorage.setItem('user', JSON.stringify(user));
+
+    return user;
   } catch (error) {
     console.error('Error logging in:', error);
     throw error;

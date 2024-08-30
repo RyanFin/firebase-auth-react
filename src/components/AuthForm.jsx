@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { signUp, login } from '../auth';
 
 // eslint-disable-next-line react/prop-types
-const AuthForm = ({ isLogin }) => {
+const AuthForm = ({ isLogin, onSuccess }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState(''); // Added state for name
@@ -20,7 +20,7 @@ const AuthForm = ({ isLogin }) => {
       } else {
         await signUp(email, password, name, address);
       }
-      alert('Success!');
+      if (onSuccess) onSuccess(); // Notify App about successful login or sign-up
     } catch (err) {
       setError(err.message);
     }
