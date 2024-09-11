@@ -1,8 +1,8 @@
 // src/App.jsx
 import { useState, useEffect } from 'react';
 import AuthForm from './components/AuthForm';
-import { getUserDetails } from './auth'; // Import the function to get user details
-import './App.css';  // Importing the CSS file for styling
+import { getUserDetails, loginWithGoogle } from './auth'; // Import the Google login function
+import './App.css';
 
 const App = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -29,6 +29,19 @@ const App = () => {
     }
   };
 
+  // Handle Google login
+  const handleGoogleLogin = async () => {
+    setLoading(true);
+    try {
+      await loginWithGoogle();
+      await fetchUserDetails(); // Fetch user details after Google login
+    } catch (error) {
+      console.error('Error with Google login:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // Call fetchUserDetails when the component mounts or after a successful login/sign-up
   useEffect(() => {
     fetchUserDetails();
@@ -49,6 +62,11 @@ const App = () => {
           <AuthForm isLogin={isLogin} onSuccess={fetchUserDetails} />
           <button className="toggle-button" onClick={toggleAuthMode}>
             {isLogin ? 'Need an account? Sign Up' : 'Already have an account? Login'}
+          </button>
+
+          {/* Google login button */}
+          <button className="google-login-button" onClick={handleGoogleLogin}>
+            Login with Google
           </button>
         </>
       )}
